@@ -340,6 +340,240 @@ export const GLOBAL_SERVICES: ServiceItem[] = [
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    id: 'how-to-generate-strong-passwords-protect-accounts-2026',
+    slug: 'how-to-generate-strong-passwords-protect-accounts-2026',
+    title: {
+      ar: 'أسرار توليد كلمات السر القوية وغير القابلة للاختراق في 2026: دليلك العملي لتأمين حساباتك وأدواتك الرقمية',
+      en: 'Ultimate Guide to Generating Unhackable Strong Passwords in 2026: Secure Your Accounts and Digital Life',
+      fr: 'Guide Ultime pour Générer des Mots de Passe Inviolables en 2026 : Protégez Vos Comptes',
+      es: 'Guía Definitiva para Generar Contraseñas Fuertes e Inviolables en 2026: Protege tus Cuentas',
+      de: 'Der ultimative Leitfaden zur Erstellung unknackbarer Passwörter im Jahr 2026',
+      zh: '2026 强密码生成与账户防盗全景指南：打造无法破解的数字安全防线',
+      ja: '2026年最新 絶対に破られない強力なパスワード生成法：アカウントと個人情報の完全防衛',
+      tr: '2026 Kırılamaz Güçlü Şifre Oluşturma Rehberi: Hesaplarınızı ve Verilerinizi Koruyun',
+    },
+    excerpt: {
+      ar: 'شرح عملي لكيفية توليد كلمات سر عشوائية ومعقدة تفشل برامج التخمين وهجمات القوة العمياء (Brute Force)، مع نصائح حصرية لاختيار كلمات المرور واستخدام أدوات التوليد السحابية الآمنة.',
+      en: 'A practical deep dive into generating random, complex passwords that defeat brute-force algorithms, along with expert tips on password management and client-side generator tools.',
+      fr: 'Découvrez comment générer des mots de passe robustes et aléatoires pour déjouer les attaques par force brute et sécuriser vos applications web.',
+      es: 'Aprende a generar contraseñas seguras y aleatorias que neutralizan los ataques de fuerza bruta y protegen tus servicios digitales.',
+      de: 'Erfahren Sie, wie Sie hochkomplexe Zufallspasswörter generieren, Brute-Force-Angriffe abwehren und Ihre digitalen Konten optimal absichern.',
+      zh: '深度解析高强度随机密码生成机制，阐述如何彻底瓦解暴力破解攻击并构建全方位的个人与企业账户安全体系。',
+      ja: '総当たり攻撃（ブルートフォース）を完全に無力化する強力なランダムパスワードの生成基準と管理手法を徹底解説。',
+      tr: 'Kaba kuvvet (Brute Force) saldırılarını engelleyen güçlü ve rastgele şifreler oluşturmanın püf noktalarını ve hesap güvenliği adımlarını keşfedin.',
+    },
+    content: {
+      ar: `في ظل التطور المتسارع للبرمجيات الخبيثة وأجهزة الحوسبة الفائقة، لم تعد كلمات المرور البسيطة أو المألوفة (مثل أسماء الأشخاص وتواريخ الميلاد والكلمات المتسلسلة) قادرة على الصمود لأكثر من **بضعة أجزاء من الثانية** أمام خوارزميات التخمين الآلي.
+
+إن امتلاك **كلمة سر قوية وفريدة لكل حساب** هو خط الدفاع الأول والأساسي لحماية بريدك الإلكتروني، حساباتك البنكية، قنواتك على يوتيوب، ومواقعك الإلكترونية.
+
+---
+
+### 1. كيف تخترق برمجيات التخمين (Brute-Force & Dictionary Attacks) كلمات المرور؟
+* **هجوم القاموس (Dictionary Attack):** تقوم البرامج بتجربة ملايين الكلمات الشائعة وقواميس التسريبات السابقة في ثوانٍ معدودة.
+* **هجوم القوة العمياء (Brute-Force):** تجربة جميع الاحتمالات الممكنة للأحرف والأرقام. إذا كانت كلمة السر مكونة من 8 أحرف صغيرة فقط، يمكن لبطاقة رسوميات حديثة كسرها في أقل من دقيقة!
+* **قوة التعقيد والطول (Entropy):** كلما زاد طول كلمة المرور عن **14 إلى 16 خانة** وتضمنت مزيجاً من (أحرف كبيرة A-Z، أحرف صغيرة a-z، أرقام 0-9، ورموز خاصة مثل @#$%^&*)، تتضاعف المدة الزمنية المطلوبة لكسرها إلى **ملايين السنين**.
+
+---
+
+### 2. المواصفات الهندسية لكلمة السر غير القابلة للاختراق
+1. **الطول المثالي:** لا يقل أبداً عن 12 إلى 16 حرفاً في الحسابات العادية، و 20+ حرفاً للحسابات الحساسة (مثل البريد الأساسي واستضافات المواقع).
+2. **العشوائية الكاملة:** تجنب أي نمط متوقع (مثل: كلمة + سنة الميلاد، أو استبدال حرف o برقم 0).
+3. **عدم التكرار المطلق:** لا تستخدم نفس كلمة السر لأكثر من حساب واحد نهائياً؛ لأن تسريب موقع واحد قد يفتح للمخترق جميع حساباتك الأخرى.
+
+---
+
+### 3. استخدام أداة توليد كلمات المرور الآمنة على hanan.fun
+توفر منصتنا **[أداة توليد كلمات المرور القوية]** التي تعمل بتقنية التوليد المشفر من جانب العميل (Client-Side Cryptographic PRNG):
+* **تشفير محلي 100%:** لا يتم إرسال أي كلمة سر يتم توليدها إلى السيرفر أو تخزينها على الإنترنت.
+* **تخصيص كامل:** إمكانية التحكم في الطول، وتفعيل أو استثناء الرموز والأرقام والأحرف المتشابهة (مثل l و 1 و O و 0).
+* **مؤشر القوة الفوري:** يوضح لك مدى متانة الكلمة والزمن التقديري لكسرها.
+
+---
+
+### 4. أفضل الطرق لإدارة وحفظ كلمات المرور دون نسيانها
+* **طريقة العبارة المفتاحية (Passphrase):** دمج 4 إلى 5 كلمات عشوائية غير مترابطة تفصل بينها رموز وأرقام (مثال: \`Eagle#Blue99!River$Orbit\`).
+* **استخدام برامج إدارة كلمات المرور (Password Managers):** تطبيقات مشفرة مثل Bitwarden أو 1Password التي تحفظ كلماتك في خزانة مشفرة بمفتاح رئيسي واحد.
+* **تفعيل المصادقة الثنائية (2FA / Passkeys):** خطوة إضافية تضمن ألا يتمكن أحد من فتح حسابك حتى لو حصل على كلمة المرور.
+
+> 💡 **نصيحة ذهبية:** قم بتحديث كلمات مرور حساباتك الرئيسية بانتظام، واستعن بأداة التوليد العشوائي على موقعنا لإنشاء كلمات مرور مستحيلة التخمين.`,
+      en: `In an era of hyper-fast computing and automated credential stuffing, traditional passwords based on dictionary words or dates can be cracked in **mere milliseconds**.
+
+Establishing **unique, high-entropy cryptographic passwords** across every digital platform is the ultimate baseline for safeguarding personal identity, financial assets, and cloud systems.
+
+---
+
+### 1. Anatomy of Modern Password Attacks
+* **Dictionary Attacks:** High-throughput scripts testing billions of known leaked words per second.
+* **Brute-Force Computation:** Iterating through mathematical combinations. An 8-character single-case password falls in seconds, while a 16-character multi-symbol passphrase requires **quadrillions of compute years** to crack.
+
+---
+
+### 2. Engineering Criteria for Maximum Password Strength
+1. **Length Dominance:** Strive for 14 to 20+ characters across all primary identities.
+2. **Pure Pseudo-Random Entropy:** Eliminating mnemonic patterns, keyboard walks, and substitution cliches.
+3. **Strict Zero-Reuse Policy:** Isolated credentials prevent cascading breach compromises.
+
+---
+
+### 3. Zero-Knowledge Password Generation on hanan.fun
+Our built-in **Password Generator Tool** leverages cryptographic browser PRNG APIs:
+- **100% Client-Side:** Passwords are generated locally on your device without reaching external servers.
+- **Granular Customization:** Fine-tune symbol density, number inclusion, and string complexity.
+- **Real-Time Strength Scoring:** Immediate validation against cryptographic entropy metrics.
+
+---
+
+### 4. Operational Best Practices
+- Combine Passphrase generation with robust open-source password managers (e.g. Bitwarden).
+- Enforce Multi-Factor Authentication (2FA) and FIDO2 Passkeys on all core email and hosting accounts.`,
+      fr: `Découvrez comment créer des mots de passe ultra-sécurisés et complexes pour protéger vos comptes en ligne contre les attaques par force brute grâce aux outils de génération aléatoire côté client.`,
+      es: `Aprende a generar contraseñas seguras y aleatorias con algoritmos criptográficos que hacen imposible el descifrado por fuerza bruta, protegiendo tu vida digital y empresarial.`,
+      de: `Erfahren Sie, wie moderne Passworterstellungs-Algorithmen funktionieren, warum Länge wichtiger als Komplexität ist und wie Sie Ihre Daten 2026 wirksam schützen.`,
+      zh: '全面掌握高熵值安全强密码生成法则，杜绝暴力破解与凭据撞库攻击，结合端侧密码生成工具筑牢数字资产核心防线。',
+      ja: 'ブルートフォース攻撃を無力化する超高強度パスワードの作成基準、パスフレーズ活用法、および安全なパスワード管理術を解説。',
+      tr: 'Kaba kuvvet saldırılarına karşı kırılamaz şifreler üretme teknikleri, parola yöneticileri ve hesap güvenliği için temel adımlar.',
+    },
+    category: 'security',
+    author: {
+      name: 'Marcus Vance',
+      role: {
+        ar: 'مستشار الأمن السيبراني والامتثال الدولي',
+        en: 'Cybersecurity & Compliance Director',
+        fr: 'Directeur Cybersécurité & Conformité',
+        es: 'Director de Ciberseguridad y Cumplimiento',
+        de: 'Direktor für Cybersicherheit und Compliance',
+        zh: '网络安全与国际合规总监',
+        ja: 'サイバーセキュリティ＆コンプライアンス責任者',
+        tr: 'Siber Güvenlik ve Uyum Direktörü',
+      },
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    },
+    publishDate: '2026-09-01',
+    readTimeMin: 6,
+    coverImage: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&auto=format&fit=crop&q=80',
+    tags: ['توليد كلمة السر', 'أمان الحسابات', 'حماية من الاختراق', 'Strong Passwords', 'Password Generator', 'Cybersecurity 2026'],
+    views: 18500,
+    likes: 1340,
+    commentsCount: 38,
+  },
+  {
+    id: 'youtube-creator-account-security-anti-hacking-guide-2026',
+    slug: 'youtube-creator-account-security-anti-hacking-guide-2026',
+    title: {
+      ar: 'دليل حماية قنوات يوتيوب وحسابات جوجل من الاختراق وسرقة الجلسات (Session Hijacking) لعام 2026',
+      en: 'YouTube Channel & Google Account Security Guide 2026: Defending Against Session Hijacking and Phishing',
+      fr: 'Guide 2026 de Sécurité pour Chaînes YouTube et Comptes Google : Contre le Vol de Session',
+      es: 'Guía 2026 de Seguridad para Canales de YouTube y Cuentas de Google: Prevención de Hackeos',
+      de: 'Sicherheitsleitfaden für YouTube-Kanäle und Google-Konten 2026: Schutz vor Session-Hijacking',
+      zh: '2026 YouTube 创作者与 Google 账户防黑客全攻略：彻底防范 Cookie 劫持与网络钓鱼',
+      ja: '2026年版 YouTubeチャンネルとGoogleアカウントのセキュリティ完全対策：乗っ取りとフィッシング防止',
+      tr: '2026 YouTube Kanalı ve Google Hesabı Güvenlik Rehberi: Çalınma ve Oltalamaya Karşı Korunma',
+    },
+    excerpt: {
+      ar: 'دليلك الهندسي الشامل لتأمين قناة اليوتيوب وحساب Gmail من حملات التصيد وسرقة ملفات تعريف الارتباط (Cookie Theft)، تفعيل مفاتيح المرور Passkeys والمصادقة الثنائية 2FA لضمان حماية أرباحك ومجهودك.',
+      en: 'An in-depth security guide for creators and publishers to shield YouTube channels and Google identities from session hijacking, malicious sponsorship PDFs, and cookie-stealing malware.',
+      fr: 'Protégez votre chaîne YouTube et votre compte Google contre les piratages, le vol de cookies de session et les faux partenariats publicitaires.',
+      es: 'Guía exhaustiva para creadores de contenido: cómo blindar tu canal de YouTube y cuenta de Google frente a malware y robo de sesiones.',
+      de: 'Ein praxisnaher Leitfaden für Content Creator: Schützen Sie Ihren YouTube-Kanal und Ihr Google-Konto vor Session-Hijacking und Phishing-Angriffen.',
+      zh: '专为 YouTube 创作者与站长打造的安全指南：防范虚假商单木马、彻底拦截 Session Cookie 窃取，开启 Passkey 硬件级防护。',
+      ja: 'YouTubeクリエイター必読！セッションCookieの盗難や偽スポンサー案件による乗っ取りを防ぎ、アカウントとAdSense収益を守る手順。',
+      tr: 'YouTube içerik üreticileri ve web yayıncıları için kanal güvenliği, oturum hırsızlığına karşı önlemler ve iki adımlı doğrulama rehberi.',
+    },
+    content: {
+      ar: `تعتبر قنوات **يوتيوب (YouTube)** وحسابات **جوجل وأدسنس** المرتبطة بها هدفاً ثميناً جداً للمخترقين وعصابات القرصنة الإلكترونية. في الآونة الأخيرة، لم يعد الاختراق يعتمد فقط على معرفة كلمة السر، بل تطور إلى **سرقة ملفات تعريف الارتباط وجلسات التصفح (Cookie Theft / Session Hijacking)** التي تتجاوز أحياناً حتى التحقق بخطوتين إذا لم يتم اتخاذ الاحتياطات الصحيحة!
+
+إذا كنت صانع محتوى أو تمتلك موقعاً وقناة، فإن تطبيق هذا الدليل يضمن لك حماية قناتك وأرباحك بنسبة 100%.
+
+---
+
+### 1. كيف تحدث أشهر عمليات اختراق قنوات يوتيوب؟
+1. **عروض التعاون والإعلانات الوهمية (Fake Sponsorship Deals):**
+   - يتلقى صاحب القناة بريداً إلكترونياً من "شركة ألعاب" أو "برنامج تحرير فيديو" يعرض عليه مبلغاً مغرياً مقابل مراجعة البرنامج.
+   - عند تحميل الملف المرفق (الذي يبدو كملف PDF أو رابط مضغوط ZIP)، يتم تشغيل برنامج تجسس خفي يُعرف بـ (Info-Stealer Malware).
+2. **سرقة ملفات تعريف الارتباط (Session Cookies):**
+   - يقوم الفيروس بنسخ كوكيز المتصفح التي تحتوي على جلسة تسجيل الدخول النشطة لحساب جوجل، وإرسالها للمخترق الذي يفتح القناة مباشرة من جهازه دون طلب كلمة السر أو رمز التحقق!
+3. **تغيير اسم القناة وبث فيديوهات احتيالية:**
+   - يقوم المخترق فوراً بتغيير اسم القناة وبث فيديوهات مباشرة غير قانونية تؤدي لإغلاق القناة من قِبل يوتيوب.
+
+---
+
+### 2. خطة الأمان المنيعة الموصى بها رسمياً من Google
+* **عزل بريد التواصل التجاري:** لا تضع إطلاقاً البريد الإلكتروني الأصلي المالك للقناة في خانة "للتواصل التجاري / For Business Inquiries" في وصف القناة. استخدم بريداً ثانوياً منفصلاً تماماً.
+* **استخدام حساب علامة تجارية (Brand Account):** انقل قناتك إلى Brand Account وعيّن حساباتك الأخرى كمدراء أو محررين بصلاحيات محدودة، حتى لا يؤدي اختراق أي جهاز إلى فقدان الملكية الأساسية.
+* **تفعيل مفاتيح المرور (Google Passkeys):** أحدث وأقوى تقنية أمان تم إطلاقها؛ حيث تستخدم بصمة الإصبع أو الوجه أو القفل البيومتري لجهازك بدلاً من كلمات السر التقليدية، وهي محصنة ضد هجمات التصيد.
+* **تفعيل ميزة التصفح الآمن المحسّن (Enhanced Safe Browsing):** في إعدادات حساب Google، حيث تقوم بفحص الروابط والملفات المشبوهة بالذكاء الاصطناعي قبل فتحها.
+
+---
+
+### 3. أدوات الأمان وفحص الروابط المشبوهة
+- قبل فتح أي رابط أو ملف تجاري، افحصه عبر أدوات فحص العناوين وبرمجيات الفحص السحابي.
+- استخدم **كلمة مرور مشفرة ومعقدة** تم توليدها عشوائياً لحسابك الأساسي عبر أداة توليد كلمات المرور المتاحة في موقعنا.
+
+---
+
+### 4. ماذا تفعل فوراً إذا شككت في وجود نشاط مريب؟
+1. ادخل فوراً إلى **صفحة أمان حساب Google** (myaccount.google.com/security).
+2. انقر على **"الأجهزة" (Your Devices)** ثم اختر **"تسجيل الخروج من جميع الجلسات والأجهزة الأخرى"**.
+3. قم بتغيير كلمة المرور فوراً من جهاز نظيف ومضمون.
+4. افحص **الأذونات والتطبيقات الخارجية المرتبطة (Third-Party Apps)** واحذف أي تطبيق غير معروف.
+
+> 🛡️ **خلاصة:** إن وعيك الرقمي وحذرك من الملفات المجهولة، مع تفعيل مفاتيح Passkeys وكلمات المرور الفريدة، يمنح قناتك حصناً منيعاً لا يمكن اختراقه.`,
+      en: `YouTube channels, Google identities, and connected AdSense earnings represent prime targets for sophisticated cyber threat actors. Modern attacks increasingly rely on **infostealer malware and session cookie theft**, bypassing standard credential prompts entirely.
+
+This definitive framework provides content creators, agencies, and publishers with end-to-end operational security to guarantee complete account integrity.
+
+---
+
+### 1. The Anatomy of Modern Channel Hijacking
+- **Weaponized Sponsorship Proposals:** Phishing lures disguised as commercial sponsorship contracts containing archive payloads (ZIP/SCR) embedded with cookie-harvesting malware.
+- **Session Token Exfiltration:** Malware extracts authenticated session tokens directly from local browser databases, granting intruders instantaneous administrative dashboard access without prompting MFA.
+
+---
+
+### 2. Enterprise-Grade Defense Matrix
+1. **Air-Gapped Inquiries Email:** Strictly isolate your public commercial contact email from the private apex Google account that owns the channel.
+2. **Brand Account Delegation:** Assign editor/manager roles with scoped permissions rather than executing day-to-day operations from the primary channel owner account.
+3. **Hardware FIDO2 Passkeys:** Upgrade authentication to biometric and cryptographic Passkeys, rendering traditional phishing completely obsolete.
+4. **Google Enhanced Safe Browsing:** Enable real-time telemetry heuristics to intercept malicious payload downloads before execution.
+
+---
+
+### 3. Incident Response Protocol
+- Immediately trigger **Global Session Termination** via \`myaccount.google.com/security\`.
+- Rotate credentials with high-entropy cryptographic strings.
+- Revoke suspicious OAuth authorizations and third-party integrations.`,
+      fr: `Protégez votre chaîne YouTube et votre compte Google contre les attaques par vol de session et les faux partenariats grâce à l'authentification Passkeys et aux bonnes pratiques de cybersécurité.`,
+      es: `Guía definitiva para blindar tu canal de YouTube y cuenta de Google frente al robo de cookies de sesión, malware en patrocinios falsos y accesos no autorizados.`,
+      de: `Schützen Sie Ihren YouTube-Kanal und Ihr Google-Konto effektiv vor Session-Hijacking, Phishing-Mails und Malware-Angriffen mit modernen Sicherheitsmaßnahmen.`,
+      zh: '针对 YouTube 创作者与网站主的防盗号防封禁实战手册：深度抵御 Cookie 劫持、假商单木马，全面落地 Passkeys 无密码安全认证。',
+      ja: 'YouTubeの乗っ取り被害を防ぐための実践ガイド。偽案件メールの対策、セッション盗難防止、Passkey設定手順を徹底解説。',
+      tr: 'YouTube kanalınızı ve Google hesabınızı sahte sponsorluk tuzaklarına, oturum hırsızlığına ve kötü amaçlı yazılımlara karşı koruma rehberi.',
+    },
+    category: 'monetization',
+    author: {
+      name: 'م. كريم العلي / Eng. Karim Al-Ali',
+      role: {
+        ar: 'مهندس اتصالات وشبكات الإنترنت اللاسلكية',
+        en: 'Broadband & Wireless Systems Engineer',
+        fr: 'Ingénieur Télécoms & Réseaux Sans-Fil',
+        es: 'Ingeniero de Telecomunicaciones y Redes',
+        de: 'Ingenieur für Breitband- und Funknetze',
+        zh: '宽带与无线通信系统工程师',
+        ja: 'ブロードバンド＆ワイヤレス通信エンジニア',
+        tr: 'Genişbant ve Kablosuz Ağ Mühendisi',
+      },
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    },
+    publishDate: '2026-09-01',
+    readTimeMin: 7,
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80',
+    tags: ['حماية قنوات يوتيوب', 'أمان حساب جوجل', 'منع اختراق يوتيوب', 'YouTube Security', 'Account Protection', 'AdSense Safety'],
+    views: 16200,
+    likes: 1210,
+    commentsCount: 32,
+  },
+  {
     id: 'cloud-security-and-ssl-https-protection-2026',
     slug: 'cloud-security-and-ssl-https-protection-2026',
     title: {
