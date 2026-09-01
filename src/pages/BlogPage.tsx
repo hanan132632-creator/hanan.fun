@@ -60,11 +60,12 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
   const categories = [
     { id: 'all', label: 'جميع المقالات (All Articles)' },
+    { id: 'security', label: 'الأمان وشهادات SSL (Security & SSL)' },
+    { id: 'performance', label: 'السيو وسرعة المواقع (SEO & Performance)' },
     { id: 'ai', label: 'الذكاء الاصطناعي والبرمجيات (AI & Software)' },
     { id: 'culture', label: 'الذكاء والألعاب الذهنية (Brain & Culture)' },
     { id: 'networking', label: 'الشبكات وسرعة النت (Networking & Wi-Fi)' },
     { id: 'monetization', label: 'الربح من جوجل أدسنس (AdSense)' },
-    { id: 'security', label: 'الأمان والـ DDoS (Security)' },
     { id: 'cloud', label: 'البنية السحابية (Cloud)' },
   ];
 
