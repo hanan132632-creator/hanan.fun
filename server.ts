@@ -43,6 +43,22 @@ async function startServer() {
     res.send("google.com, pub-3298241753177072, DIRECT, f08c47fec0942fa0\n");
   });
 
+  // Sitemap.xml endpoint
+  app.get("/sitemap.xml", (_req, res) => {
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    const sitemapPath = path.join(process.cwd(), "public", "sitemap.xml");
+    res.sendFile(sitemapPath);
+  });
+
+  // Robots.txt endpoint
+  app.get("/robots.txt", (_req, res) => {
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    const robotsPath = path.join(process.cwd(), "public", "robots.txt");
+    res.sendFile(robotsPath);
+  });
+
   // Contact Form Submission API
   app.post("/api/contact", (req, res) => {
     try {

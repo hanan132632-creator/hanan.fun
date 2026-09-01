@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "node create_favicon.cjs && vite build && mkdir -p dist/public_html && cp -f public_html/ads.txt dist/public_html/ads.txt && cp -f public/ads.txt dist/ads.txt && cp -f public/favicon.* dist/ && cp -f public/apple-touch-icon.png dist/ && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build": "node create_favicon.cjs && vite build && mkdir -p dist/public_html && cp -f public_html/ads.txt dist/public_html/ads.txt && cp -f public/ads.txt dist/ads.txt && cp -f public/favicon.* dist/ && cp -f public/apple-touch-icon.png dist/ && cp -f public/sitemap.xml dist/sitemap.xml && cp -f public/robots.txt dist/robots.txt && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
