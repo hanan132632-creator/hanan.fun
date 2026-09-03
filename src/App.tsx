@@ -38,16 +38,28 @@ export default function App() {
     return saved || 'USD';
   });
 
-  // Navigation State
-  const [activePage, setActivePage] = useState<ActivePage>(() => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname.toLowerCase();
-      if (path.includes('ads.txt')) {
-        window.location.replace('/ads.txt');
-      }
+  // URL Path to ActivePage resolver
+  const getInitialPage = (): ActivePage => {
+    if (typeof window === 'undefined') return 'home';
+    const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+    if (path.includes('ads.txt')) {
+      window.location.replace('/ads.txt');
+      return 'home';
     }
+    if (path === '/about' || path.endsWith('/about')) return 'about';
+    if (path === '/store' || path.endsWith('/store')) return 'store';
+    if (path === '/blog' || path.endsWith('/blog')) return 'blog';
+    if (path === '/contact' || path.endsWith('/contact')) return 'contact';
+    if (path === '/privacy' || path === '/privacy-policy' || path.endsWith('/privacy')) return 'privacy';
+    if (path === '/terms' || path === '/terms-of-service' || path.endsWith('/terms')) return 'terms';
+    if (path === '/cookies' || path === '/cookie-policy' || path.endsWith('/cookies')) return 'cookies';
+    if (path === '/adsense-standards' || path.endsWith('/adsense-standards')) return 'adsense-standards';
+    if (path === '/diagnostics' || path.endsWith('/diagnostics')) return 'diagnostics';
     return 'home';
-  });
+  };
+
+  // Navigation State
+  const [activePage, setActivePage] = useState<ActivePage>(getInitialPage);
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(null);
 
   // Dark Mode State
@@ -115,8 +127,27 @@ export default function App() {
     return () => window.removeEventListener('scroll', checkScroll);
   }, []);
 
+  // Listen to browser popstate (back/forward buttons)
+  useEffect(() => {
+    const handlePopState = () => {
+      setActivePage(getInitialPage());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const handleNavigate = (page: ActivePage) => {
     setActivePage(page);
+    if (typeof window !== 'undefined') {
+      const targetPath = page === 'home' ? '/' : `/${page}`;
+      if (window.location.pathname !== targetPath) {
+        try {
+          window.history.pushState({ page }, '', targetPath);
+        } catch {
+          // ignore if history api is restricted
+        }
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
