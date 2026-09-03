@@ -44,8 +44,9 @@ async function startServer() {
   });
 
   // Sitemap.xml endpoint
-  app.get("/sitemap.xml", (_req, res) => {
+  app.get(["/sitemap.xml", "/sitemap_index.xml", "/sitemap"], (_req, res) => {
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Cache-Control", "public, max-age=3600");
     const sitemapPath = path.join(process.cwd(), "public", "sitemap.xml");
     res.sendFile(sitemapPath);
@@ -54,6 +55,7 @@ async function startServer() {
   // Robots.txt endpoint
   app.get("/robots.txt", (_req, res) => {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Cache-Control", "public, max-age=3600");
     const robotsPath = path.join(process.cwd(), "public", "robots.txt");
     res.sendFile(robotsPath);
