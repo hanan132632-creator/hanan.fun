@@ -32,6 +32,10 @@
           "value": "text/plain; charset=UTF-8"
         },
         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
           "key": "Cache-Control",
           "value": "public, max-age=3600"
         }
@@ -43,6 +47,10 @@
         {
           "key": "Content-Type",
           "value": "text/plain; charset=UTF-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         },
         {
           "key": "Cache-Control",
