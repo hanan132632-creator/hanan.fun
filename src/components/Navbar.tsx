@@ -12,7 +12,8 @@ import {
   Activity,
   Check,
   Gamepad2,
-  KeyRound
+  KeyRound,
+  Smartphone
 } from 'lucide-react';
 import { Language, Currency, ActivePage, CartItem } from '../types';
 import { LANGUAGES, CURRENCIES, TRANSLATIONS } from '../locales/translations';
@@ -29,6 +30,7 @@ interface NavbarProps {
   cartItems: CartItem[];
   onOpenCart: () => void;
   onOpenAiAssistant: () => void;
+  onOpenMobileOptimizer: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -43,6 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   cartItems,
   onOpenCart,
   onOpenAiAssistant,
+  onOpenMobileOptimizer,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -174,6 +177,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Gamepad2 className="w-3.5 h-3.5" />
               <span>خمّن الكلمة 🟩</span>
+            </button>
+
+            {/* Mobile Optimizer Button */}
+            <button
+              onClick={onOpenMobileOptimizer}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm shadow-emerald-500/20 transition-all hover:scale-105 active:scale-95"
+              title="تحسين أداء الجوال Google Search Console"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>تحسين الجوال 📱</span>
             </button>
 
             {/* AI Assistant Button */}
@@ -350,6 +363,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Gamepad2 className="w-4 h-4" />
               <span>خمّن الكلمة العربية 🟩</span>
+            </button>
+
+            <button
+              onClick={() => {
+                onOpenMobileOptimizer();
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-sm w-full justify-center"
+            >
+              <Smartphone className="w-4 h-4" />
+              <span>تحسين أداء الجوال (Search Console) 📱</span>
             </button>
 
             <button

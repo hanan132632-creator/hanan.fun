@@ -22,6 +22,7 @@ import { TermsPage } from './pages/TermsPage';
 import { CookiePolicyPage } from './pages/CookiePolicyPage';
 import { AdSenseStandardsPage } from './pages/AdSenseStandardsPage';
 import { SpeedTestWidget } from './components/SpeedTestWidget';
+import { MobileOptimizerModal } from './components/MobileOptimizerModal';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Sparkles, ShoppingBag, ArrowUp } from 'lucide-react';
 
@@ -81,6 +82,7 @@ export default function App() {
 
   // AI Assistant Modal State
   const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
+  const [mobileOptimizerOpen, setMobileOptimizerOpen] = useState(false);
 
   // Scroll to top button visibility
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -189,6 +191,7 @@ export default function App() {
         cartItems={cartItems}
         onOpenCart={() => setCartDrawerOpen(true)}
         onOpenAiAssistant={() => setAiAssistantOpen(true)}
+        onOpenMobileOptimizer={() => setMobileOptimizerOpen(true)}
       />
 
       {/* Main Page Content Router */}
@@ -304,6 +307,13 @@ export default function App() {
       <AiAssistantModal
         isOpen={aiAssistantOpen}
         onClose={() => setAiAssistantOpen(false)}
+        currentLang={currentLang}
+      />
+
+      {/* Mobile Search Console & Performance Modal */}
+      <MobileOptimizerModal
+        isOpen={mobileOptimizerOpen}
+        onClose={() => setMobileOptimizerOpen(false)}
         currentLang={currentLang}
       />
 
