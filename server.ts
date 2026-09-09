@@ -1,5 +1,8 @@
 import express from "express";
 import path from "path";
+import { exec } from "child_process";
+import fs from "fs";
+import os from "os";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
@@ -175,6 +178,61 @@ Keep answers insightful, polite, practical, and highly helpful with clear bullet
       });
     }
   });
+
+  // Instagram / TikTok / Reels Video Transcoder API (H.264 + AAC 44.1kHz standard)
+  app.post(
+    "/api/transcode-instagram",
+    express.raw({ type: "*/*", limit: "150mb" }),
+    async (req, res) => {
+      try {
+        if (!req.body || !Buffer.isBuffer(req.body) || req.body.length === 0) {
+          return res.status(400).json({ error: "No video data received" });
+        }
+
+        const tempId = `transcode_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+        const inputPath = path.join(os.tmpdir(), `${tempId}_input`);
+        const outputPath = path.join(os.tmpdir(), `${tempId}_output.mp4`);
+
+        await fs.promises.writeFile(inputPath, req.body);
+
+        // FFmpeg command ensuring H.264 (yuv420p) + AAC (44.1kHz Stereo, 192k) + faststart
+        // Instagram and Facebook Reels require AAC audio and H.264 with moov atom at beginning
+        const cmd = `ffmpeg -y -i "${inputPath}" -c:v libx264 -pix_fmt yuv420p -preset ultrafast -crf 22 -c:a aac -b:a 192k -ar 44100 -ac 2 -movflags +faststart "${outputPath}"`;
+
+        exec(cmd, async (error) => {
+          try {
+            await fs.promises.unlink(inputPath).catch(() => {});
+          } catch {}
+
+          if (error) {
+            console.error("FFmpeg transcode error:", error);
+            try {
+              await fs.promises.unlink(outputPath).catch(() => {});
+            } catch {}
+            return res.status(500).json({ error: "Transcoding failed" });
+          }
+
+          try {
+            const stat = await fs.promises.stat(outputPath);
+            res.setHeader("Content-Type", "video/mp4");
+            res.setHeader("Content-Length", stat.size);
+            res.setHeader("Content-Disposition", `attachment; filename="hanan-instagram-reels-${Date.now()}.mp4"`);
+
+            const readStream = fs.createReadStream(outputPath);
+            readStream.pipe(res);
+            readStream.on("end", () => {
+              fs.promises.unlink(outputPath).catch(() => {});
+            });
+          } catch (readErr) {
+            return res.status(500).json({ error: "Could not read output video" });
+          }
+        });
+      } catch (err: any) {
+        console.error("Transcode route error:", err);
+        return res.status(500).json({ error: "Server transcode error" });
+      }
+    }
+  );
 
   // Vite middleware in development
   if (process.env.NODE_ENV !== "production") {
