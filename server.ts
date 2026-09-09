@@ -3,6 +3,7 @@ import path from "path";
 import { exec } from "child_process";
 import fs from "fs";
 import os from "os";
+import multer from "multer";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
@@ -179,7 +180,73 @@ Keep answers insightful, polite, practical, and highly helpful with clear bullet
     }
   });
 
-  // Instagram / TikTok / Reels Video Transcoder API (H.264 + AAC 44.1kHz standard)
+  // Multer setup for handling video and original audio upload
+  const upload = multer({
+    dest: os.tmpdir(),
+    limits: { fileSize: 300 * 1024 * 1024 } // 300MB
+  });
+
+  // Universal Video + Pristine Audio Transcoder API (YouTube Shorts, TikTok, Instagram Reels)
+  app.post(
+    "/api/merge-and-transcode",
+    upload.fields([
+      { name: "video", maxCount: 1 },
+      { name: "audio", maxCount: 1 }
+    ]),
+    async (req: any, res) => {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const videoFile = files?.["video"]?.[0];
+      const audioFile = files?.["audio"]?.[0];
+
+      if (!videoFile) {
+        return res.status(400).json({ error: "No video file uploaded" });
+      }
+
+      const outputPath = path.join(os.tmpdir(), `merged_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.mp4`);
+
+      // If both video and original audio were provided:
+      // Map video stream 0:v:0 and map pure original audio stream 1:a:0 with AAC 44.1kHz Stereo!
+      let cmd: string;
+      if (audioFile) {
+        cmd = `ffmpeg -y -i "${videoFile.path}" -i "${audioFile.path}" -map 0:v:0 -map 1:a:0 -c:v libx264 -pix_fmt yuv420p -preset ultrafast -crf 22 -c:a aac -b:a 192k -ar 44100 -ac 2 -shortest -movflags +faststart "${outputPath}"`;
+      } else {
+        cmd = `ffmpeg -y -i "${videoFile.path}" -c:v libx264 -pix_fmt yuv420p -preset ultrafast -crf 22 -c:a aac -b:a 192k -ar 44100 -ac 2 -movflags +faststart "${outputPath}"`;
+      }
+
+      exec(cmd, async (error) => {
+        // Clean up uploaded input files immediately
+        try {
+          if (videoFile?.path) await fs.promises.unlink(videoFile.path).catch(() => {});
+          if (audioFile?.path) await fs.promises.unlink(audioFile.path).catch(() => {});
+        } catch {}
+
+        if (error) {
+          console.error("FFmpeg merge error:", error);
+          try {
+            await fs.promises.unlink(outputPath).catch(() => {});
+          } catch {}
+          return res.status(500).json({ error: "FFmpeg transcoding failed" });
+        }
+
+        try {
+          const stat = await fs.promises.stat(outputPath);
+          res.setHeader("Content-Type", "video/mp4");
+          res.setHeader("Content-Length", stat.size);
+          res.setHeader("Content-Disposition", `attachment; filename="hanan-video-aac-${Date.now()}.mp4"`);
+
+          const readStream = fs.createReadStream(outputPath);
+          readStream.pipe(res);
+          readStream.on("end", () => {
+            fs.promises.unlink(outputPath).catch(() => {});
+          });
+        } catch (readErr) {
+          return res.status(500).json({ error: "Could not stream output video" });
+        }
+      });
+    }
+  );
+
+  // Fallback raw buffer transcode
   app.post(
     "/api/transcode-instagram",
     express.raw({ type: "*/*", limit: "150mb" }),
@@ -195,8 +262,6 @@ Keep answers insightful, polite, practical, and highly helpful with clear bullet
 
         await fs.promises.writeFile(inputPath, req.body);
 
-        // FFmpeg command ensuring H.264 (yuv420p) + AAC (44.1kHz Stereo, 192k) + faststart
-        // Instagram and Facebook Reels require AAC audio and H.264 with moov atom at beginning
         const cmd = `ffmpeg -y -i "${inputPath}" -c:v libx264 -pix_fmt yuv420p -preset ultrafast -crf 22 -c:a aac -b:a 192k -ar 44100 -ac 2 -movflags +faststart "${outputPath}"`;
 
         exec(cmd, async (error) => {

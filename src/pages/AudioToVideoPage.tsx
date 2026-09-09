@@ -294,33 +294,36 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
       setErrorMessage(null);
       setGeneratedVideoUrl(null);
 
-      // Create controlled audio element
-      const exportAudio = new Audio(audioUrl);
-      exportAudio.crossOrigin = 'anonymous';
+      // Create controlled audio element for canvas synchronization
+      const exportAudio = new Audio();
+      exportAudio.src = audioUrl;
+      exportAudio.preload = 'auto';
+      exportAudio.muted = false;
+      exportAudio.volume = 1.0;
       await new Promise<void>((resolve, reject) => {
         exportAudio.oncanplaythrough = () => resolve();
         exportAudio.onerror = (e) => reject(e);
         exportAudio.load();
       });
 
-      // Audio Context for recording stream with standard 44.1kHz sample rate (critical for Instagram/TikTok)
+      // Audio Context for recording stream with standard 44.1kHz sample rate
       const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       const exportCtx = new AudioCtx({ sampleRate: 44100 });
       if (exportCtx.state === 'suspended') {
         await exportCtx.resume();
       }
 
-      exportAudio.muted = false;
-      exportAudio.volume = 1.0;
-
       const exportAnalyser = exportCtx.createAnalyser();
       exportAnalyser.fftSize = 64; // lighter & faster for mobile/tablet
       
       const audioSource = exportCtx.createMediaElementSource(exportAudio);
       const audioDest = exportCtx.createMediaStreamDestination();
+      const gainNode = exportCtx.createGain();
+      gainNode.gain.value = 1.0;
       
-      audioSource.connect(exportAnalyser);
-      audioSource.connect(audioDest);
+      audioSource.connect(gainNode);
+      gainNode.connect(exportAnalyser);
+      gainNode.connect(audioDest);
 
       // Capture Canvas Stream (24 FPS is ideal and lightweight for mobile/tablet export)
       const canvasStream = canvasRef.current.captureStream ? canvasRef.current.captureStream(24) : null;
@@ -505,7 +508,7 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
     }
   };
 
-  // Official Instagram Reels & TikTok Certified Transcoder (H.264 + AAC Audio 44.1kHz)
+  // Official TikTok, YouTube Shorts & Instagram Reels Certified Transcoder (H.264 + Original AAC Audio 44.1kHz)
   const handleDownloadInstagramMp4 = async () => {
     if (!generatedBlob) {
       handleDirectDownload();
@@ -514,12 +517,16 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
 
     try {
       setIsTranscodingInstagram(true);
-      const res = await fetch('/api/transcode-instagram', {
+      
+      const formData = new FormData();
+      formData.append('video', generatedBlob, `video-${Date.now()}.${videoFormatExt}`);
+      if (audioFile) {
+        formData.append('audio', audioFile, audioFile.name || 'audio.mp3');
+      }
+
+      const res = await fetch('/api/merge-and-transcode', {
         method: 'POST',
-        headers: {
-          'Content-Type': generatedBlob.type || 'video/webm'
-        },
-        body: generatedBlob
+        body: formData
       });
 
       if (!res.ok) {
@@ -527,9 +534,25 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
       }
 
       const mp4Blob = await res.blob();
-      const mp4Url = URL.createObjectURL(mp4Blob);
+      const fileName = `hanan-shorts-tiktok-${Date.now()}.mp4`;
 
-      const fileName = `instagram-reels-${Date.now()}.mp4`;
+      // Check if native sharing is available for instant saving to photos/files on iPad & Android
+      const file = new File([mp4Blob], fileName, { type: 'video/mp4' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: isAr ? 'فيديو تيك توك وشورتس hanan.fun' : 'hanan.fun Video',
+            text: isAr ? 'فيديو جاهز للنشر على تيك توك، شورتس، وإنستغرام ريلز بصوت أصلي' : 'Ready for TikTok, Shorts & Reels'
+          });
+          return;
+        } catch (shareErr) {
+          if ((shareErr as Error).name === 'AbortError') return;
+        }
+      }
+
+      // Direct download fallback
+      const mp4Url = URL.createObjectURL(mp4Blob);
       const a = document.createElement('a');
       a.href = mp4Url;
       a.download = fileName;
@@ -542,7 +565,7 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
         URL.revokeObjectURL(mp4Url);
       }, 1000);
     } catch (err) {
-      console.error('Instagram transcode error:', err);
+      console.error('Platforms transcode error:', err);
       // Fallback to direct download
       handleDirectDownload();
     } finally {
@@ -860,37 +883,37 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
                     </div>
                   </div>
 
-                  {/* Dedicated Instagram Reels & TikTok Certified Button */}
+                  {/* Dedicated TikTok, YouTube Shorts & Instagram Reels Certified Button */}
                   <div className="pt-2 space-y-2">
                     <button
                       type="button"
                       onClick={handleDownloadInstagramMp4}
                       disabled={isTranscodingInstagram}
-                      className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-rose-500 via-purple-600 to-pink-600 hover:opacity-95 text-white font-black text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-purple-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer disabled:opacity-70"
+                      className="w-full py-4 px-4 rounded-xl bg-gradient-to-r from-rose-500 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl shadow-purple-600/30 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer disabled:opacity-70"
                     >
                       {isTranscodingInstagram ? (
                         <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          <span>{isAr ? 'جاري تجهيز صوت نقي 100% متوافق مع إنستغرام...' : 'Processing Instagram Certified AAC Audio...'}</span>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          <span>{isAr ? 'جاري دمج الصوت الأصلي بجودة استوديو (AAC)...' : 'Merging Original Audio with Studio AAC...'}</span>
                         </>
                       ) : (
                         <>
                           <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
                           <span>
                             {isAr 
-                              ? '✨ تحميل لإنستغرام وريلز (صوت مفعل 100% بدون علامة X)' 
-                              : '✨ Download for Instagram & Reels (AAC Audio Guaranteed)'}
+                              ? '✨ تحميل لـ تيك توك، يوتيوب شورتس، وريلز (صوت أصلي 100% بدون كتم)' 
+                              : '✨ Download for TikTok, Shorts & Reels (Guaranteed Audio)'}
                           </span>
                         </>
                       )}
                     </button>
 
-                    <div className="p-3 rounded-xl bg-purple-100/70 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/60 text-[11px] text-purple-900 dark:text-purple-200 leading-relaxed flex items-start gap-2">
+                    <div className="p-3 rounded-xl bg-purple-100/80 dark:bg-purple-950/50 border border-purple-200 dark:border-purple-800/70 text-xs text-purple-900 dark:text-purple-200 leading-relaxed flex items-start gap-2.5">
                       <Sparkles className="w-4 h-4 text-pink-500 flex-shrink-0 mt-0.5" />
                       <span>
                         {isAr
-                          ? 'لصناع المحتوى على إنستغرام: إنستغرام يشترط تشفير صوت AAC. الزر الوردي بالأعلى يقوم بترميز الصوت تلقائياً لتظهر أيقونة الصوت نشطة وتعمل فوراً في ريلز وقصص إنستغرام بدون كتم!'
-                          : 'Instagram requires official AAC stereo audio. The button above encodes your video to pass Instagram Reels audio checks effortlessly.'}
+                          ? '🔥 هام جداً لتيك توك وشورتس وريلز: اضغطي على الزر البنفسجي بالأعلى، حيث يقوم بدمج ملف الصوت الأصلي الذي قمتِ برفعه مباشرة داخل الفيديو بتشفير AAC 44.1kHz المعتمد عالمياً، ليعمل الصوت فوراً على تيك توك، يوتيوب، وإنستغرام وبأعلى درجة وضوح ونقاء!'
+                          : 'Essential for TikTok, Shorts & Reels: The purple button merges your original uploaded audio directly using universal AAC 44.1kHz, ensuring your sound is never muted or flagged!'}
                       </span>
                     </div>
                   </div>
