@@ -13,7 +13,8 @@ import {
   Sparkles,
   ChevronRight,
   TrendingUp,
-  Layers
+  Layers,
+  Video
 } from 'lucide-react';
 import { Language, Currency, ActivePage, ServiceItem, CartItem } from '../types';
 import { TRANSLATIONS, CURRENCIES } from '../locales/translations';
@@ -79,8 +80,16 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* CTAs */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
                 <button
+                  onClick={() => onNavigate('audio-to-video')}
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black text-sm shadow-lg shadow-purple-500/25 transition-all hover:scale-105 flex items-center gap-2"
+                >
+                  <Video className="w-4 h-4 text-amber-300" />
+                  <span>{currentLang === 'ar' ? 'استوديو الصوت لفيديو (مجاناً) 🎬' : 'Audio to Video Studio 🎬'}</span>
+                </button>
+
+                <button
                   onClick={() => onNavigate('store')}
-                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all hover:scale-102 flex items-center gap-2"
+                  className="px-5 py-3.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-sm border border-slate-200 dark:border-slate-700 shadow-sm transition-all flex items-center gap-2"
                 >
                   <span>{t.btn_explore_store}</span>
                   <ArrowRight className="w-4 h-4 rtl:rotate-180" />
@@ -88,7 +97,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                 <button
                   onClick={onOpenAiAssistant}
-                  className="px-5 py-3.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-sm border border-slate-200 dark:border-slate-700 shadow-sm transition-all flex items-center gap-2"
+                  className="px-4 py-3.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 font-semibold text-sm transition-colors flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-purple-600" />
                   <span>{t.btn_ask_ai}</span>

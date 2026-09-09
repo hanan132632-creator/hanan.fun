@@ -87,6 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navLinks: { page: ActivePage; label: string }[] = [
     { page: 'home', label: t.nav_home },
+    { page: 'audio-to-video', label: currentLang === 'ar' ? 'استوديو الصوت لفيديو 🎬' : 'Audio to Video 🎬' },
     { page: 'store', label: t.nav_store },
     { page: 'blog', label: t.nav_blog },
     { page: 'diagnostics', label: t.nav_diagnostics },

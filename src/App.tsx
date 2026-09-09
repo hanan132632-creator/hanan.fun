@@ -21,6 +21,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { CookiePolicyPage } from './pages/CookiePolicyPage';
 import { AdSenseStandardsPage } from './pages/AdSenseStandardsPage';
+import { AudioToVideoPage } from './pages/AudioToVideoPage';
 import { SpeedTestWidget } from './components/SpeedTestWidget';
 import { MobileOptimizerModal } from './components/MobileOptimizerModal';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -55,6 +56,7 @@ export default function App() {
     if (path === '/terms' || path === '/terms-of-service' || path.endsWith('/terms')) return 'terms';
     if (path === '/cookies' || path === '/cookie-policy' || path.endsWith('/cookies')) return 'cookies';
     if (path === '/adsense-standards' || path.endsWith('/adsense-standards')) return 'adsense-standards';
+    if (path === '/audio-to-video' || path.endsWith('/audio-to-video')) return 'audio-to-video';
     if (path === '/diagnostics' || path.endsWith('/diagnostics')) return 'diagnostics';
     return 'home';
   };
@@ -265,6 +267,12 @@ export default function App() {
 
         {activePage === 'adsense-standards' && (
           <AdSenseStandardsPage
+            currentLang={currentLang}
+          />
+        )}
+
+        {activePage === 'audio-to-video' && (
+          <AudioToVideoPage
             currentLang={currentLang}
           />
         )}
