@@ -261,8 +261,8 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
     }
   };
 
-  // Start Video Recording & Export (Web MediaRecorder - 100% Free & Local)
-  const handleExportVideo = async () => {
+  // Start Video Recording & Export (Web MediaRecorder - 100% Free, Fast & Local)
+  const handleExportVideo = async (speedMultiplier = 1) => {
     if (!audioUrl) {
       setErrorMessage(isAr ? 'يرجى تحميل مقطع صوتي أولاً' : 'Please upload an audio file first');
       return;
@@ -275,53 +275,71 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
       setErrorMessage(null);
       setGeneratedVideoUrl(null);
 
-      // Create an offline or controlled audio element
+      // Create controlled audio element
       const exportAudio = new Audio(audioUrl);
-      await exportAudio.load();
+      exportAudio.crossOrigin = 'anonymous';
+      await new Promise<void>((resolve, reject) => {
+        exportAudio.oncanplaythrough = () => resolve();
+        exportAudio.onerror = (e) => reject(e);
+        exportAudio.load();
+      });
 
       // Audio Context for recording stream
       const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       const exportCtx = new AudioCtx();
+      if (exportCtx.state === 'suspended') {
+        await exportCtx.resume();
+      }
+
       const exportAnalyser = exportCtx.createAnalyser();
-      exportAnalyser.fftSize = 128;
+      exportAnalyser.fftSize = 64; // lighter & faster for mobile/tablet
       
       const audioSource = exportCtx.createMediaElementSource(exportAudio);
       const audioDest = exportCtx.createMediaStreamDestination();
       
       audioSource.connect(exportAnalyser);
       audioSource.connect(audioDest);
-      // Also connect to headphones if user wants to hear, or keep silent
 
-      // Capture Canvas Stream
-      const canvasStream = canvasRef.current.captureStream(30); // 30 FPS
+      // Capture Canvas Stream (24 FPS is ideal and lightweight for mobile/tablet export)
+      const canvasStream = canvasRef.current.captureStream ? canvasRef.current.captureStream(24) : null;
+      if (!canvasStream) {
+        throw new Error('Canvas capture stream not supported');
+      }
 
       // Combine Video and Audio tracks
-      const combinedTracks = [
-        ...canvasStream.getVideoTracks(),
-        ...audioDest.stream.getAudioTracks()
-      ];
+      const audioTracks = audioDest.stream.getAudioTracks();
+      const videoTracks = canvasStream.getVideoTracks();
+
+      if (videoTracks.length === 0) {
+        throw new Error('No video tracks available');
+      }
+
+      const combinedTracks = [...videoTracks, ...audioTracks];
       const combinedStream = new MediaStream(combinedTracks);
 
       // Supported mimeType check
       const mimeTypes = [
+        'video/mp4;codecs=avc1,mp4a.40.2',
+        'video/mp4',
         'video/webm;codecs=vp9,opus',
         'video/webm;codecs=vp8,opus',
-        'video/webm',
-        'video/mp4'
+        'video/webm'
       ];
       let selectedMimeType = '';
       for (const mime of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(mime)) {
+        if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(mime)) {
           selectedMimeType = mime;
           break;
         }
       }
 
-      const recorder = new MediaRecorder(combinedStream, {
-        mimeType: selectedMimeType || undefined,
-        videoBitsPerSecond: 3000000 // 3 Mbps crisp quality
-      });
+      const recorderOptions: MediaRecorderOptions = {};
+      if (selectedMimeType) {
+        recorderOptions.mimeType = selectedMimeType;
+      }
+      recorderOptions.videoBitsPerSecond = 2500000; // 2.5 Mbps crisp & fast
 
+      const recorder = new MediaRecorder(combinedStream, recorderOptions);
       mediaRecorderRef.current = recorder;
       const chunks: Blob[] = [];
 
@@ -331,27 +349,34 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
         }
       };
 
+      const totalDuration = exportAudio.duration || audioDuration || 15;
+
       recorder.onstop = () => {
+        const ext = selectedMimeType.includes('mp4') ? 'mp4' : 'webm';
         const blob = new Blob(chunks, { type: selectedMimeType || 'video/webm' });
         const videoBlobUrl = URL.createObjectURL(blob);
         setGeneratedVideoUrl(videoBlobUrl);
         setIsProcessing(false);
         setProgress(100);
         exportAudio.pause();
+        try {
+          exportCtx.close();
+        } catch {}
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
         }
       };
 
       // Progress Tracker & Frame Animator
-      const totalDuration = exportAudio.duration || audioDuration || 10;
       exportAudio.ontimeupdate = () => {
         const currentProg = Math.min(99, Math.round((exportAudio.currentTime / totalDuration) * 100));
         setProgress(currentProg);
       };
 
       exportAudio.onended = () => {
-        recorder.stop();
+        if (recorder.state === 'recording') {
+          recorder.stop();
+        }
       };
 
       const renderRecordingFrames = () => {
@@ -363,8 +388,14 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
         }
       };
 
-      // Start recording
-      recorder.start();
+      // Start recording with small slice intervals (500ms) to ensure continuous buffering
+      recorder.start(500);
+      
+      // Speed up audio play if accelerated export
+      if (speedMultiplier > 1 && exportAudio.playbackRate !== undefined) {
+        exportAudio.playbackRate = speedMultiplier;
+      }
+
       await exportAudio.play();
       renderRecordingFrames();
 
@@ -373,8 +404,8 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
       setIsProcessing(false);
       setErrorMessage(
         isAr 
-          ? 'حدث خطأ أثناء معالجة الفيديو في المتصفح. تأكد من إعطاء المتصفح الإذن وقم بالمحاولة مجدداً.' 
-          : 'Error generating video. Please ensure audio permissions are allowed and retry.'
+          ? 'المتصفح يحتاج إذن تشغيل الصوت للمعالجة. يرجى الضغط على "سماع الصوت" أولاً للتأكد، ثم الضغط على "إنشاء الفيديو".' 
+          : 'Browser audio policy blocked automated playback. Please click "Play Preview" first, then click "Export Video".'
       );
     }
   };
@@ -712,21 +743,34 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
 
               {/* Primary Action Button: Create Video */}
               {!generatedVideoUrl && !isProcessing && (
-                <button
-                  type="button"
-                  onClick={handleExportVideo}
-                  disabled={!audioUrl}
-                  className={`w-full py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-3 shadow-xl transition-all ${
-                    audioUrl
-                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white cursor-pointer hover:scale-[1.01]'
-                      : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
-                  }`}
-                >
-                  <Zap className="w-5 h-5 text-amber-300" />
-                  <span>
-                    {isAr ? 'إنشاء وتصدير الفيديو فوراً (مجاناً 100%)' : 'Export Video Instantly (100% Free)'}
-                  </span>
-                </button>
+                <div className="space-y-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleExportVideo(1)}
+                    disabled={!audioUrl}
+                    className={`w-full py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-3 shadow-xl transition-all ${
+                      audioUrl
+                        ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white cursor-pointer hover:scale-[1.01]'
+                        : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+                    }`}
+                  >
+                    <Zap className="w-5 h-5 text-amber-300" />
+                    <span>
+                      {isAr ? 'إنشاء وتصدير الفيديو فوراً (مجاناً 100%)' : 'Export Video Instantly (100% Free)'}
+                    </span>
+                  </button>
+
+                  {audioUrl && (
+                    <button
+                      type="button"
+                      onClick={() => handleExportVideo(2)}
+                      className="w-full py-2.5 px-4 rounded-xl border border-indigo-200 dark:border-indigo-800/60 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                    >
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      <span>{isAr ? '⚡ تصدير فائق السرعة (مضاعف 2X لتوفير الوقت على التابلت)' : '⚡ Turbo 2X Fast Export (Saves time on tablets)'}</span>
+                    </button>
+                  )}
+                </div>
               )}
 
               {/* Safe & Local Guarantee Note */}
