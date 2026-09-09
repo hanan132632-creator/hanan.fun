@@ -190,6 +190,38 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* Interactive Arabic Games & Wordle Hub */}
       <InteractiveGamesSection currentLang={currentLang} />
 
+      {/* Audio to Video Feature Spotlight Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="relative z-10 max-w-2xl space-y-4 text-center lg:text-start">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-black tracking-wider uppercase">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>{currentLang === 'ar' ? 'أداة مجانية 100% بدون اشتراك' : '100% Free Creator Tool'}</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-snug">
+              {currentLang === 'ar' 
+                ? 'حوّلي تسجيلاتك وصوتياتك إلى فيديو احترافي في ثوانٍ 🎬' 
+                : 'Convert Any Audio into Engaging Video in Seconds 🎬'}
+            </h2>
+            <p className="text-blue-100 text-sm sm:text-base leading-relaxed">
+              {currentLang === 'ar' 
+                ? 'اصنعي فيديوهات لليوتيوب وشورتس وتيك توك مع صورة الغلاف وموجات صوتية متحركة ملونة مباشرة من التابلت دون برامج معقدة.' 
+                : 'Turn your voice notes, podcasts, and articles into YouTube & TikTok ready videos with animated waveform bars.'}
+            </p>
+          </div>
+
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4">
+            <button
+              onClick={() => onNavigate('audio-to-video')}
+              className="px-8 py-4 rounded-2xl bg-white text-indigo-900 hover:bg-slate-100 font-black text-base shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2.5"
+            >
+              <Video className="w-5 h-5 text-indigo-600" />
+              <span>{currentLang === 'ar' ? 'فتح استوديو الفيديو الآن' : 'Open Video Studio Now'}</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Services Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">

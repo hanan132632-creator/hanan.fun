@@ -17,7 +17,13 @@ import {
   Smartphone,
   ShieldCheck,
   Zap,
-  Info
+  Info,
+  Share2,
+  Copy,
+  Check,
+  MessageCircle,
+  HelpCircle,
+  TrendingUp
 } from 'lucide-react';
 import { Language } from '../types';
 
@@ -49,6 +55,15 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
   const [isPlayingPreview, setIsPlayingPreview] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [linkCopied, setLinkCopied] = useState<boolean>(false);
+
+  const handleCopyLink = () => {
+    const url = window.location.origin + '/audio-to-video';
+    navigator.clipboard.writeText(url).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2500);
+    }).catch(() => {});
+  };
 
   // Refs
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -798,8 +813,118 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
               </ul>
             </div>
 
+            {/* Virality & Social Share Card */}
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 border border-indigo-200/80 dark:border-indigo-800/60 rounded-3xl p-6 shadow-sm space-y-4">
+              <div className="flex items-center gap-2">
+                <Share2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">
+                  {isAr ? 'شاركي الأداة مع أصدقائك وصنّاع المحتوى' : 'Share this tool with creators'}
+                </h4>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                {isAr 
+                  ? 'ساعدي أصدقاءك في تحويل تسجيلاتهم وبودكاستهم إلى فيديوهات مجاناً بدون برامج معقدة.' 
+                  : 'Help your fellow creators convert podcasts & recordings into video effortlessly.'}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {/* Copy Link Button */}
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  className="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-colors"
+                >
+                  {linkCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-indigo-500" />}
+                  <span>{linkCopied ? (isAr ? 'تم نسخ الرابط!' : 'Link Copied!') : (isAr ? 'نسخ رابط الأداة' : 'Copy Link')}</span>
+                </button>
+
+                {/* WhatsApp Share */}
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                    isAr 
+                      ? 'أداة مجانية 100% لتحويل مقاطع الصوت والتسجيلات إلى فيديو احترافي مع موجات صوتية لليوتيوب والتيك توك: https://hanan.fun/audio-to-video'
+                      : 'Free tool to convert Audio into Video for YouTube & TikTok: https://hanan.fun/audio-to-video'
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>{isAr ? 'واتساب' : 'WhatsApp'}</span>
+                </a>
+
+                {/* Telegram Share */}
+                <a
+                  href={`https://t.me/share/url?url=${encodeURIComponent('https://hanan.fun/audio-to-video')}&text=${encodeURIComponent(
+                    isAr ? 'استوديو تحويل الصوت إلى فيديو مجاناً' : 'Free Audio to Video Studio'
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-3.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+                >
+                  <span>{isAr ? 'تيليجرام' : 'Telegram'}</span>
+                </a>
+              </div>
+            </div>
+
           </div>
 
+        </div>
+
+        {/* SEO & FAQ Section for Google Ranking */}
+        <div className="pt-8 border-t border-slate-200 dark:border-slate-800 space-y-6">
+          <div className="flex items-center gap-2.5">
+            <HelpCircle className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <h3 className="text-xl font-black text-slate-900 dark:text-slate-100">
+              {isAr ? 'الأسئلة الشائعة حول تحويل الصوت إلى فيديو (SEO FAQ)' : 'Frequently Asked Questions'}
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+              <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                {isAr ? 'هل أداة تحويل الصوت إلى فيديو مجانية تماماً؟' : 'Is this tool 100% free?'}
+              </h4>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isAr 
+                  ? 'نعم، مجانية بنسبة 100% بدون أي رسوم خفية أو طلب ترقية أو اشتراك شهري. يمكنك إنشاء عدد غير محدود من الفيديوهات مباشرة من هاتفك أو التابلت.' 
+                  : 'Yes, 100% free forever with no hidden paywalls or subscription limits.'}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+              <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                {isAr ? 'ما هي الصيغ التي تدعمها الأداة؟' : 'What formats are supported?'}
+              </h4>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isAr 
+                  ? 'تدعم الأداة جميع ملفات الصوت الشائعة: MP3, WAV, M4A, AAC, OGG وصور JPG, PNG, WebP. ويتم تصدير الفيديو بجودة عالية متوافقة مع يوتيوب وتيك توك.' 
+                  : 'Supports MP3, WAV, M4A, OGG, and exports to high quality YouTube/TikTok ready video.'}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+              <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                {isAr ? 'هل يتم رفع ملفاتي الصوتية على خوادم أو التجسس عليها؟' : 'Are my files uploaded or stored on servers?'}
+              </h4>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isAr 
+                  ? 'إطلاقاً! تتم معالجة وتوليد الفيديو بالكامل داخل متصفح جهازك بواسطة تقنية Web API دون إرسال أي ملف إلى أي سيرفر، لحماية خصوصيتك بنسبة 100%.' 
+                  : 'Never! All rendering happens completely client-side in your own browser for 100% privacy.'}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+              <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                {isAr ? 'كيف أرفع الفيديو على يوتيوب شورتس أو ريلز؟' : 'How to upload to YouTube Shorts or Reels?'}
+              </h4>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isAr 
+                  ? 'اختاري مقاس 9:16 من إعدادات الأداة قبل التصدير، وبعد تنزيل الفيديو، يمكنكِ رفعه مباشرة من تطبيق يوتيوب أو إنستغرام كفيديو قصير.' 
+                  : 'Choose the 9:16 aspect ratio before exporting, and upload directly via YouTube or Instagram.'}
+              </p>
+            </div>
+          </div>
         </div>
 
       </div>
