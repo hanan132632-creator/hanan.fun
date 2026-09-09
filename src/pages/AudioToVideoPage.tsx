@@ -23,6 +23,7 @@ import {
   Check,
   MessageCircle,
   HelpCircle,
+  ExternalLink,
   TrendingUp
 } from 'lucide-react';
 import { Language } from '../types';
@@ -53,6 +54,8 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
+  const [generatedBlob, setGeneratedBlob] = useState<Blob | null>(null);
+  const [videoFormatExt, setVideoFormatExt] = useState<string>('mp4');
   const [isPlayingPreview, setIsPlayingPreview] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [linkCopied, setLinkCopied] = useState<boolean>(false);
@@ -367,8 +370,13 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
       const totalDuration = exportAudio.duration || audioDuration || 15;
 
       recorder.onstop = () => {
-        const ext = selectedMimeType.includes('mp4') ? 'mp4' : 'webm';
-        const blob = new Blob(chunks, { type: selectedMimeType || 'video/webm' });
+        const isMp4 = selectedMimeType.includes('mp4');
+        const ext = isMp4 ? 'mp4' : 'webm';
+        setVideoFormatExt(ext);
+
+        const blob = new Blob(chunks, { type: selectedMimeType || 'video/mp4' });
+        setGeneratedBlob(blob);
+
         const videoBlobUrl = URL.createObjectURL(blob);
         setGeneratedVideoUrl(videoBlobUrl);
         setIsProcessing(false);
@@ -431,6 +439,59 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
       mediaRecorderRef.current.stop();
     }
     setIsProcessing(false);
+  };
+
+  // Robust Tablet Download & Save to Photos
+  const handleDirectDownload = () => {
+    if (!generatedVideoUrl) return;
+
+    try {
+      const fileName = `hanan-fun-video-${Date.now()}.${videoFormatExt}`;
+      const a = document.createElement('a');
+      a.href = generatedVideoUrl;
+      a.download = fileName;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+      }, 300);
+    } catch (e) {
+      console.error('Direct download error:', e);
+      // Fallback: Open in new window
+      window.open(generatedVideoUrl, '_blank');
+    }
+  };
+
+  // Native Tablet Share (Save to Files / Photos on iPad & Android)
+  const handleNativeTabletShare = async () => {
+    if (!generatedBlob) {
+      if (generatedVideoUrl) {
+        window.open(generatedVideoUrl, '_blank');
+      }
+      return;
+    }
+
+    const fileName = `hanan-video-${Date.now()}.${videoFormatExt}`;
+    const file = new File([generatedBlob], fileName, { type: generatedBlob.type || 'video/mp4' });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: isAr ? 'فيديو hanan.fun' : 'hanan.fun Video',
+          text: isAr ? 'تم الإنشاء عبر استوديو الفيديو في hanan.fun' : 'Created with hanan.fun Video Studio'
+        });
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          handleDirectDownload();
+        }
+      }
+    } else {
+      // If native share not supported, open in tab for easy saving
+      window.open(generatedVideoUrl || '', '_blank');
+    }
   };
 
   return (
@@ -743,15 +804,48 @@ export const AudioToVideoPage: React.FC<AudioToVideoPageProps> = ({ currentLang 
                     </div>
                   </div>
 
-                  <div className="pt-2 flex flex-wrap gap-3">
-                    <a
-                      href={generatedVideoUrl}
-                      download={`hanan-fun-video-${Date.now()}.mp4`}
-                      className="flex-1 min-w-[200px] py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all hover:scale-[1.01]"
+                  <div className="pt-2 flex flex-wrap gap-2.5">
+                    {/* Primary Button: Direct Download */}
+                    <button
+                      type="button"
+                      onClick={handleDirectDownload}
+                      className="flex-1 min-w-[180px] py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
                     >
                       <Download className="w-5 h-5" />
-                      <span>{isAr ? 'تحميل الفيديو على التابلت (مجاناً)' : 'Download Video Now'}</span>
+                      <span>{isAr ? 'تنزيل وحفظ الفيديو (MP4)' : 'Download Video (MP4)'}</span>
+                    </button>
+
+                    {/* Secondary Tablet Action: Native Share / Save to Photos & Files */}
+                    <button
+                      type="button"
+                      onClick={handleNativeTabletShare}
+                      className="py-3.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all hover:scale-[1.01] cursor-pointer"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>{isAr ? 'حفظ في ألبوم الصور / الملفات 📱' : 'Save to Photos / Files'}</span>
+                    </button>
+
+                    {/* Open in new tab fallback */}
+                    <a
+                      href={generatedVideoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-3.5 px-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      title={isAr ? 'فتح الفيديو في شاشة كاملة' : 'Open in New Tab'}
+                    >
+                      <Play className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span>{isAr ? 'مشاهدة' : 'Preview'}</span>
                     </a>
+                  </div>
+
+                  {/* Tablet Friendly Helper Tip */}
+                  <div className="pt-1 text-[11px] text-emerald-800/80 dark:text-emerald-300/80 flex items-center gap-1.5">
+                    <Info className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span>
+                      {isAr 
+                        ? 'ملاحظة للتابلت: إذا ظهر "تعذر التنزيل"، اضغطي على زر "حفظ في ألبوم الصور" أو "مشاهدة" لحفظ الفيديو بلمسة واحدة.'
+                        : 'Tablet note: If direct download is restricted, tap "Save to Photos" to save it immediately.'}
+                    </span>
                   </div>
                 </div>
               )}
