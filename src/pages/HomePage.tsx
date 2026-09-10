@@ -14,7 +14,8 @@ import {
   ChevronRight,
   TrendingUp,
   Layers,
-  Video
+  Video,
+  Award
 } from 'lucide-react';
 import { Language, Currency, ActivePage, ServiceItem, CartItem } from '../types';
 import { TRANSLATIONS, CURRENCIES } from '../locales/translations';
@@ -31,6 +32,7 @@ interface HomePageProps {
   onAddToCart: (service: ServiceItem) => void;
   onSelectBlog: (slug: string) => void;
   onOpenAiAssistant: () => void;
+  onOpenAdSenseReport?: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -40,6 +42,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onAddToCart,
   onSelectBlog,
   onOpenAiAssistant,
+  onOpenAdSenseReport,
 }) => {
   const t = TRANSLATIONS[currentLang];
   const currentCurrObj = CURRENCIES.find(c => c.code === currentCurrency) || CURRENCIES[0];
@@ -79,6 +82,15 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               {/* CTAs */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                <button
+                  id="home-hero-adsense-report-btn"
+                  onClick={onOpenAdSenseReport}
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-white font-black text-sm shadow-lg shadow-amber-500/25 transition-all hover:scale-105 flex items-center gap-2"
+                >
+                  <Award className="w-4 h-4 text-amber-200" />
+                  <span>{currentLang === 'ar' ? 'تقرير جوجل أدسنس للموقع 📊' : 'Google AdSense Report 📊'}</span>
+                </button>
+
                 <button
                   onClick={() => onNavigate('audio-to-video')}
                   className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black text-sm shadow-lg shadow-purple-500/25 transition-all hover:scale-105 flex items-center gap-2"

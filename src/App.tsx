@@ -24,6 +24,7 @@ import { AdSenseStandardsPage } from './pages/AdSenseStandardsPage';
 import { AudioToVideoPage } from './pages/AudioToVideoPage';
 import { SpeedTestWidget } from './components/SpeedTestWidget';
 import { MobileOptimizerModal } from './components/MobileOptimizerModal';
+import { AdSenseReportModal } from './components/AdSenseReportModal';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Sparkles, ShoppingBag, ArrowUp } from 'lucide-react';
 
@@ -85,6 +86,7 @@ export default function App() {
   // AI Assistant Modal State
   const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
   const [mobileOptimizerOpen, setMobileOptimizerOpen] = useState(false);
+  const [adSenseReportOpen, setAdSenseReportOpen] = useState(false);
 
   // Scroll to top button visibility
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -194,6 +196,7 @@ export default function App() {
         onOpenCart={() => setCartDrawerOpen(true)}
         onOpenAiAssistant={() => setAiAssistantOpen(true)}
         onOpenMobileOptimizer={() => setMobileOptimizerOpen(true)}
+        onOpenAdSenseReport={() => setAdSenseReportOpen(true)}
       />
 
       {/* Main Page Content Router */}
@@ -209,6 +212,7 @@ export default function App() {
               handleNavigate('blog');
             }}
             onOpenAiAssistant={() => setAiAssistantOpen(true)}
+            onOpenAdSenseReport={() => setAdSenseReportOpen(true)}
           />
         )}
 
@@ -323,6 +327,14 @@ export default function App() {
         isOpen={mobileOptimizerOpen}
         onClose={() => setMobileOptimizerOpen(false)}
         currentLang={currentLang}
+      />
+
+      {/* Google AdSense Live Report & Verification Modal */}
+      <AdSenseReportModal
+        isOpen={adSenseReportOpen}
+        onClose={() => setAdSenseReportOpen(false)}
+        currentLang={currentLang}
+        onNavigateToStandards={() => handleNavigate('adsense-standards')}
       />
 
       {/* Cookie Consent Banner */}

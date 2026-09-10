@@ -337,9 +337,15 @@ export const BlogPage: React.FC<BlogPageProps> = ({
         <div className="space-y-10">
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 text-xs font-bold">
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>مركز المعرفة التقنية والربح من الويب</span>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>مركز المعرفة التقنية والربح من الويب</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-black border border-emerald-200 dark:border-emerald-800">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <span>إجمالي المقالات المنشورة: {BLOG_POSTS.length} مقالاً معتمداً</span>
+              </div>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
               {t.blog_title}
@@ -367,15 +373,20 @@ export const BlogPage: React.FC<BlogPageProps> = ({
               ))}
             </div>
 
-            <div className="relative w-full md:w-64">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 rtl:left-auto rtl:right-3 top-2.5" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="بحث في المقالات..."
-                className="w-full pl-9 pr-4 rtl:pl-4 rtl:pr-9 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
-              />
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <span className="hidden sm:inline text-xs font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                (المعروض: {filteredPosts.length} من {BLOG_POSTS.length})
+              </span>
+              <div className="relative w-full md:w-64">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 rtl:left-auto rtl:right-3 top-2.5" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="بحث في المقالات..."
+                  className="w-full pl-9 pr-4 rtl:pl-4 rtl:pr-9 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                />
+              </div>
             </div>
           </div>
 

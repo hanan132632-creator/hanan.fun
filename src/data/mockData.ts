@@ -340,6 +340,164 @@ export const GLOBAL_SERVICES: ServiceItem[] = [
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    id: 'adsense-site-review-approval-checklist-2026',
+    slug: 'adsense-site-review-approval-checklist-2026',
+    title: {
+      ar: 'دليل اجتياز مراجعة جوجل أدسنس الشامل 2026: أسرار تسريع قبول المواقع، تجنب رفض "محتوى غير ذي قيمة"، وفحص ملف ads.txt',
+      en: 'Definitive 2026 Google AdSense Site Review & Approval Manual: Fast-Tracking Acceptance, Fixing "Low Value Content", and ads.txt Verification',
+      fr: 'Guide Complet d\'Approbation Google AdSense 2026 : Accélérez l\'Examen de Votre Site et Résolvez les Refus de Contenu',
+      es: 'Guía Definitiva para Aprobar la Revisión de Google AdSense en 2026: Aprobación Rápida y Verificación de ads.txt',
+      de: 'Der ultimative Leitfaden zur Genehmigung von Google AdSense 2026: Schnelle Überprüfung und ads.txt-Verifizierung',
+      zh: '2026 Google AdSense 网站全景审核与快速过审指南：破解低价值内容与合规配置',
+      ja: '2026年最新 Google AdSense サイト審査完全攻略ガイド：早期承認の秘訣とads.txt設定',
+      tr: '2026 Kapsamlı Google AdSense Site İnceleme ve Onay Kılavuzu: Hızlı Kabul ve ads.txt Doğrulaması',
+    },
+    excerpt: {
+      ar: 'دليل عملي مفصل يشرح خطوة بخطوة كيف تفحص خوارزميات ومراجعو Google AdSense موقعك أثناء مرحلة (قيد المراجعة Getting Ready)، مع معايير E-E-A-T، وإعدادات ملف ads.txt، وكيفية إزالة جميع معوقات القبول فوراً.',
+      en: 'A step-by-step masterclass explaining how Google AdSense automated bots and human reviewers evaluate your site during the "Getting Ready" stage, covering E-E-A-T standards, ads.txt validation, and instant rejection-proofing.',
+      fr: 'Découvrez comment les algorithmes et les évaluateurs de Google AdSense analysent votre site pendant la phase de révision, avec les meilleures pratiques pour une approbation rapide.',
+      es: 'Aprende los secretos del proceso de revisión de Google AdSense, optimización técnica y configuración de ads.txt para garantizar una aprobación del 100%.',
+      de: 'Ein praxisorientierter Leitfaden zur Genehmigung bei Google AdSense: Erfahren Sie, worauf Prüfer achten und wie Sie Ihren Blog perfekt aufstellen.',
+      zh: '深度解析 Google AdSense 审核周期运作机制，针对“低价值内容”与“合规政策”提供系统性整改与快速过审策略。',
+      ja: 'AdSense審査「準備中」の段階でGoogleロボットと審査員がチェックする必須基準、E-E-A-Tの満たし方、ads.txtの実装を完全網羅。',
+      tr: 'Google AdSense inceleme sürecini başarıyla tamamlama rehberi: Değersiz içerik uyarısından kurtulma, ads.txt entegrasyonu ve hızlı onay adımları.',
+    },
+    content: {
+      ar: `عند إرسال موقعك الإلكتروني للاشتراك في برنامج **Google AdSense**، يدخل الموقع في مرحلة تُعرف بـ **"قيد المراجعة" (Getting ready)**. تمثل هذه المرحلة فحصاً مزدوجاً وشاملاً تجريه روبوتات Google الزاحفة أولاً، يعقبها فحص يدوي بواسطة فريق تقييم الجودة (Quality Raters).
+
+الكثير من أصحاب المواقع يشعرون بالقلق أثناء فترة الانتظار أو يتفاجأون برسائل رفض غير واضحة مثل *"محتوى غير ذي قيمة (Low Value Content)"* أو *"موقع قيد الإنشاء"*. في هذا الدليل التخصصي لعام 2026، نكشف لكم تفصيلياً معايير القبول وكيف تضمن اجتياز المراجعة بنجاح بنسبة 100%.
+
+---
+
+### 1. كيف تسير دورة مراجعة موقعك في Google AdSense؟
+تمر عملية المراجعة بثلاث محطات رئيسية:
+1. **التحقق التقني الأولي (Automated Spider Check):**
+   - هل كود الشفرة الإعلانية أو ملف \`ads.txt\` موجود ومكتشف في مساره الصحيح؟
+   - هل الموقع يعمل دون أخطاء برمجية أو أخطاء خادم (\`5xx Error Rate = 0%\`)؟
+   - هل الموقع آمن ومشفر ببروتوكول HTTPS ويملك شهادة SSL صالحة؟
+2. **فحص قابلية الوصول والتنقل (Navigation & UX Audit):**
+   - هل القائمة العلوية (Navbar) واضحة وتعمل جميع روابطها دون صفحات 404 ميتة؟
+   - هل تصفح الموقع على شاشات الهواتف الذكية سلس وسريع، ومطابق لمعايير Core Web Vitals؟
+3. **تقييم جودة المحتوى والشفافية (Human Quality Assessment):**
+   - مراجعة المقالات والمحتوى للتأكد من أصالته وفائدته الحقيقية للزائر.
+   - التحقق من وجود الصفحات الإلزامية: سياسة الخصوصية، الشروط والأحكام، سياسة الكوكيز، صفحة من نحن، وصفحة اتصل بنا.
+
+---
+
+### 2. أهم أسباب الرفض وكيفية حلها جذرياً
+
+#### أ. سبب الرفض: "محتوى غير ذي قيمة" (Low-Value Content)
+هذا السبب هو الأكثر شيوعاً بين الناشرين الجدد، ولا يعني بالضرورة قلة عدد المقالات، بل يتعلق بالآتي:
+* **الحل:** احرص على نشر مقالات تفصيلية تتجاوز 800 - 1500 كلمة، تقدم حلولاً عملية، شروحات تقنية، أو أدوات تفاعلية لا يجدها الزائر مكررة حرفياً في مواقع أخرى.
+* **الأدوات التفاعلية:** إضافة أدوات برمجية مفيدة (مثل: استوديو الصوت لفيديو، مولد كلمات السر، فحص السرعة) ترفع قيمة الموقع في نظر مراجعي جوجل إلى أعلى تصنيف، لأنها توفر "منفعة وظيفية فورية" وليست مجرد نصوص.
+
+#### ب. سبب الرفض: "صعوبة التنقل في الموقع" (Navigation Issues)
+* **الحل:** تأكد من أن كل رابط في القائمة العلوية والفوتر يقود إلى صفحة نشطة وممتلئة بالمحتوى. لا تترك أقساماً فارغة أو روابط تحمل وسم \`#\` دون وجهة محددة.
+
+#### ج. غياب معايير الشفافية (Transparency & Contact Info)
+* **الحل:** يجب أن يجد المراجع والزائر وسيلة حقيقية للتواصل (بريد إلكتروني رسمي، نموذج اتصال، عنوان، ونبذة واضحة عن فريق العمل).
+
+---
+
+### 3. سر ملف ads.txt وأهميته القصوى في القبول
+ملف \`ads.txt\` (Authorized Digital Sellers) هو معيار عالمي أصدره مختبر IAB Tech Lab ويشترطه Google AdSense لقطع الطريق على الاحتيال الإعلاني.
+* **المسار المطلوب:** يجب أن يُقدم الموقع الملف على الرابطين:
+  - \`https://domain.com/ads.txt\`
+  - \`https://domain.com/.well-known/ads.txt\`
+* **صيغة السطر القياسي:**
+  \`google.com, pub-3298241753177072, DIRECT, f08c47fec0942fa0\`
+* **معنى كلمة DIRECT:** تعني أنك أنت المالك المباشر للحساب وليس وسيطاً، وهذا يعطي موقعك أعلى أولوية وأعلى أرباح (CPM).
+
+---
+
+### 4. معايير E-E-A-T التي تضاعف فرص القبول
+تعتمد جوجل معايير **E-E-A-T** (الخبرة Experience، التخصص Expertise، الموثوقية Authoritativeness، والجدية بالثقة Trustworthiness):
+1. **صفحة "من نحن" (About Us):** شرح تاريخ الموقع، أهدافه، وهويات القائمين عليه.
+2. **صناديق معلومات الكتّاب:** إظهار اسم الكاتب وتخصصه وصورته بجانب كل مقال.
+3. **سياسة ملفات تعريف الارتباط (Cookie Consent):** إظهار شريط إشعار الكوكيز متوافق مع قوانين GDPR ومعايير IAB TCF 2.2.
+
+---
+
+### 5. كم تستغرق المراجعة؟ وماذا تفعل أثناء الانتظار؟
+- **المدة الطبيعية:** من **يومين إلى 14 يوماً** (وفي بعض الأحيان تمتد إلى 3 أسابيع حسب ضغط المراجعات لدى جوجل).
+- **أهم قاعدة ذهبية:** **لا تحذف الموقع أو تلغِ الطلب ثم تعيد تقديمه!** فإلغاء الطلب يعيدك إلى آخر طابور الانتظار.
+- **استمر في النشر:** استمر في إضافة مقالات دورية ومتابعة تقرير الأداء اليومي، فهذا يعطي إشارة حية لخوارزميات جوجل بأن الموقع نشط ومتجدد باستمرار.
+
+> 🌟 **خلاصة:** إن استيفاء المتطلبات التقنية، وجود ملف ads.txt، وتوفير صفحات السياسات القانونية مع أدوات تفاعلية حصرية، يجعل موقعك مؤهلاً بالكامل للحصول على الموافقة والبدء في تحقيق الأرباح بثقة.`,
+      en: `When submitting your website to **Google AdSense**, the domain enters an evaluation phase labeled **"Getting ready"**. This consists of a dual-layered audit conducted first by automated Google spiders, followed by human Quality Raters evaluating editorial authenticity and user experience.
+
+Many publishers face anxiety during this holding pattern or encounter ambiguous rejection notices such as *"Low Value Content"* or *"Site Under Construction"*. In this authoritative 2026 playbook, we demystify the review mechanism and provide the exact checklist required for guaranteed 100% approval.
+
+---
+
+### 1. Anatomy of the AdSense Evaluation Pipeline
+The review executes across three critical stages:
+1. **Automated Infrastructure Crawl:**
+   - Detects the AdSense snippet and validates \`ads.txt\` integrity.
+   - Verifies server health, zero 5xx error rates, and full HTTPS/TLS encryption.
+2. **Navigation & Core Web Vitals Audit:**
+   - Inspects menu routing, broken links (404s), mobile responsiveness, and First Contentful Paint.
+3. **Editorial Quality & Transparency (E-E-A-T):**
+   - Audits original value-add text against scraped content clones.
+   - Verifies the 5 mandatory legal pages (Privacy, Terms, Cookies, About, Contact).
+
+---
+
+### 2. Solving the Top AdSense Rejection Causes
+
+#### A. "Low Value Content"
+Google penalizes thin, generic summaries. To pass:
+- Publish in-depth guides (1,000+ words) packed with technical breakdowns and practical utility.
+- Incorporate interactive utilities (e.g. Video Studio, Password Generators, Speed Testers) which Google ranks with maximum utility scores.
+
+#### B. Navigation & Broken Layout
+Ensure every header and footer link resolves to functional, richly formatted content without dummy placeholder markers.
+
+#### C. Publisher Transparency
+Include direct contact channels, author credentials, and editorial mission statements.
+
+---
+
+### 3. The Decisive Role of ads.txt
+A properly formatted \`ads.txt\` published at both \`/ads.txt\` and \`/.well-known/ads.txt\` with the \`DIRECT\` publisher status proves verified inventory ownership to Google and programmatic DSPs.
+
+---
+
+### 4. Review Duration & Best Practices
+- Normal review durations range between **2 to 14 days**.
+- **Never cancel or resubmit the application** while queued, as it resets your review timestamp to the back of the queue.
+- Maintain a steady publication cadence of high-value technical articles to signal an active, growing platform.`,
+      fr: `Guide exhaustif pour réussir l'examen de votre site Web sur Google AdSense en 2026. Découvrez les exigences E-E-A-T, la configuration ads.txt et les optimisations indispensables pour une approbation sans accroc.`,
+      es: `Aprende a superar con éxito la revisión de Google AdSense en 2026. Guía completa sobre valor del contenido, cumplimiento de políticas, ads.txt y optimización de velocidad.`,
+      de: `Vollständiger Leitfaden zur schnellen und erfolgreichen Google AdSense-Überprüfung 2026: E-E-A-T-Kriterien, Vermeidung von Ablehnungen und korrekte ads.txt-Integration.`,
+      zh: '2026年最新 Google AdSense 审核过审全攻略：深度剖析审核流程、E-E-A-T 质量规范与 ads.txt 权威配置。',
+      ja: 'Google AdSenseサイト審査を確実にパスするための完全ガイド。低品質コンテンツの回避策からads.txtの検証手順まで分かりやすく解説。',
+      tr: '2026 Google AdSense site onay sürecinde başarılı olmanın yolları: E-E-A-T standartları, ads.txt kurulumu ve hızlı kabul stratejileri.',
+    },
+    category: 'monetization',
+    author: {
+      name: 'د. صوفيا المنصور (Dr. Sophia Al-Mansoor)',
+      role: {
+        ar: 'مستشارة تحسين الإيرادات الرقمية والامتثال الإعلاني',
+        en: 'Digital Monetization & Ad Compliance Lead',
+        fr: 'Responsable Monétisation & Conformité Publicitaire',
+        es: 'Directora de Monetización y Cumplimiento Publicitario',
+        de: 'Leiterin für digitale Monetarisierung und Werbe-Compliance',
+        zh: '数字商业化变现与广告合规主管',
+        ja: 'デジタル収益化＆広告コンプライアンス責任者',
+        tr: 'Dijital Gelir Optimizasyonu ve Reklam Uyumluluk Lideri',
+      },
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    },
+    publishDate: '2026-09-10',
+    readTimeMin: 7,
+    coverImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1000&auto=format&fit=crop&q=80',
+    tags: ['Google AdSense', 'مراجعة أدسنس', 'ads.txt', 'قبول المواقع', 'Core Web Vitals', 'SEO 2026', 'E-E-A-T'],
+    views: 480,
+    likes: 67,
+    commentsCount: 12,
+  },
+  {
     id: 'how-to-generate-strong-passwords-protect-accounts-2026',
     slug: 'how-to-generate-strong-passwords-protect-accounts-2026',
     title: {
@@ -954,7 +1112,7 @@ Modern generative AI has evolved into a robust cognitive infrastructure capable 
     },
     publishDate: '2026-08-30',
     readTimeMin: 7,
-    coverImage: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop&q=80',
     tags: ['استغلال الذكاء الاصطناعي', 'برامج الذكاء الاصطناعي', 'الربح من الذكاء الاصطناعي', 'زيادة الإنتاجية', 'AI Tools', 'Prompt Engineering', 'Productivity'],
     views: 12850,
     likes: 940,
@@ -1300,7 +1458,7 @@ Adopting specialized AI software provides an undeniable competitive advantage, a
     },
     publishDate: '2026-08-29',
     readTimeMin: 6,
-    coverImage: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop&q=80',
     tags: ['الذكاء الاصطناعي', 'برمجيات AI', 'Artificial Intelligence', 'LLM', 'AI Tools', 'Machine Learning'],
     views: 15800,
     likes: 1120,

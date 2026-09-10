@@ -13,10 +13,12 @@ import {
   Check,
   Gamepad2,
   KeyRound,
-  Smartphone
+  Smartphone,
+  Award
 } from 'lucide-react';
 import { Language, Currency, ActivePage, CartItem } from '../types';
 import { LANGUAGES, CURRENCIES, TRANSLATIONS } from '../locales/translations';
+import { BLOG_POSTS } from '../data/mockData';
 
 interface NavbarProps {
   currentLang: Language;
@@ -31,6 +33,7 @@ interface NavbarProps {
   onOpenCart: () => void;
   onOpenAiAssistant: () => void;
   onOpenMobileOptimizer: () => void;
+  onOpenAdSenseReport: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -46,6 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCart,
   onOpenAiAssistant,
   onOpenMobileOptimizer,
+  onOpenAdSenseReport,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -146,13 +150,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={link.page}
                   onClick={() => onNavigate(link.page)}
-                  className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all inline-flex items-center gap-1.5 ${
                     isActive 
                       ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400' 
                       : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                   }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  {link.page === 'blog' && (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                      {BLOG_POSTS.length}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -160,6 +169,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Action Tools & Switchers */}
           <div className="hidden sm:flex items-center gap-2.5">
+            {/* Google AdSense Site Report Button */}
+            <button
+              id="navbar-adsense-report-btn"
+              onClick={onOpenAdSenseReport}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-white shadow-sm shadow-amber-500/25 transition-all hover:scale-105 active:scale-95"
+              title="تقرير جوجل أدسنس للموقع والتحقق من حالة المراجعة"
+            >
+              <Award className="w-3.5 h-3.5 text-amber-100" />
+              <span>تقرير أدسنس 📊</span>
+            </button>
+
             {/* Password Generator Button */}
             <button
               onClick={scrollToPasswordGenerator}
@@ -337,19 +357,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onNavigate(link.page);
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full text-start px-4 py-2.5 rounded-lg text-sm font-semibold ${
+                  className={`w-full text-start px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-between ${
                     isActive 
                       ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400' 
                       : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  {link.page === 'blog' && (
+                    <span className="px-2 py-0.5 rounded-full text-xs font-black bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                      {BLOG_POSTS.length} مقالاً
+                    </span>
+                  )}
                 </button>
               );
             })}
           </div>
 
           <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+            <button
+              id="mobile-drawer-adsense-report-btn"
+              onClick={() => {
+                onOpenAdSenseReport();
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg text-xs font-black bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-sm w-full justify-center"
+            >
+              <Award className="w-4 h-4 text-amber-100" />
+              <span>تقرير جوجل أدسنس للموقع 📊</span>
+            </button>
+
             <button
               onClick={scrollToPasswordGenerator}
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-black bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-sm"
