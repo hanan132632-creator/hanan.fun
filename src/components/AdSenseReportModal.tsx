@@ -46,6 +46,7 @@ export const AdSenseReportModal: React.FC<AdSenseReportModalProps> = ({
   const [adsTxtVerified, setAdsTxtVerified] = useState<boolean | null>(null);
   const [adsTxtWellKnownVerified, setAdsTxtWellKnownVerified] = useState<boolean | null>(null);
   const [lastCheckTime, setLastCheckTime] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<'checklist' | 'timeline' | 'tools' | 'guidelines'>('checklist');
 
   const runLiveVerification = async () => {
     setChecking(true);
@@ -85,21 +86,31 @@ export const AdSenseReportModal: React.FC<AdSenseReportModalProps> = ({
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const handleCopyId = () => {
-    navigator.clipboard.writeText(publisherId);
+    try {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText(publisherId);
+      }
+    } catch {
+      // fallback
+    }
     setCopiedId(true);
     setTimeout(() => setCopiedId(false), 2000);
   };
 
   const handleCopyAdsTxt = () => {
-    navigator.clipboard.writeText(expectedAdsTxt);
+    try {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText(expectedAdsTxt);
+      }
+    } catch {
+      // fallback
+    }
     setCopiedAdsTxt(true);
     setTimeout(() => setCopiedAdsTxt(false), 2000);
   };
 
-  const [activeTab, setActiveTab] = useState<'checklist' | 'timeline' | 'tools' | 'guidelines'>('checklist');
+  if (!isOpen) return null;
 
   const complianceChecklist = [
     {
@@ -313,82 +324,6 @@ export const AdSenseReportModal: React.FC<AdSenseReportModalProps> = ({
                 0% (ممتاز)
               </div>
             </div>
-          </div>
-
-          {/* Publisher ID & Ads.txt Section */}
-          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <FileCheck className="w-4 h-4 text-amber-500" />
-                <span className="font-bold text-xs sm:text-sm">
-                  {isAr ? 'بيانات السجل الإعلاني الرسمي (ads.txt Configuration)' : 'Official ads.txt Entry'}
-                </span>
-              </div>
-              <button
-                onClick={runLiveVerification}
-                disabled={checking}
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50"
-              >
-                <RefreshCw className={`w-3 h-3 ${checking ? 'animate-spin' : ''}`} />
-                <span>{isAr ? 'إعادة الفحص المباشر' : 'Re-verify Live'}</span>
-              </button>
-            </div>
-
-            {/* The Code Box */}
-            <div className="p-3 rounded-lg bg-slate-900 text-slate-200 font-mono text-xs flex items-center justify-between gap-2 overflow-x-auto">
-              <span className="select-all text-emerald-300">
-                {expectedAdsTxt}
-              </span>
-              <button
-                onClick={handleCopyAdsTxt}
-                className="shrink-0 p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1 text-[10px]"
-                title="نسخ السطر"
-              >
-                {copiedAdsTxt ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedAdsTxt ? (isAr ? 'تم النسخ' : 'Copied') : (isAr ? 'نسخ' : 'Copy')}</span>
-              </button>
-            </div>
-
-            {/* Live Paths Status */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="font-mono text-[11px]">/ads.txt</span>
-                </div>
-                <a 
-                  href="/ads.txt" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="text-blue-600 dark:text-blue-400 text-[11px] font-bold hover:underline flex items-center gap-1"
-                >
-                  <span>{isAr ? 'فتح الرابط' : 'Open'}</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-
-              <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="font-mono text-[11px]">/.well-known/ads.txt</span>
-                </div>
-                <a 
-                  href="/.well-known/ads.txt" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="text-blue-600 dark:text-blue-400 text-[11px] font-bold hover:underline flex items-center gap-1"
-                >
-                  <span>{isAr ? 'فتح الرابط' : 'Open'}</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            </div>
-
-            {lastCheckTime && (
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 text-center">
-                {isAr ? `آخر تحقق مباشر من السيرفر: ${lastCheckTime}` : `Last live server verification: ${lastCheckTime}`}
-              </div>
-            )}
           </div>
 
           {/* Tab 1: Checklist */}
